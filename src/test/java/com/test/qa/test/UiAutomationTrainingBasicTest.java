@@ -117,17 +117,29 @@ public class UiAutomationTrainingBasicTest extends TestBase {
 		softAssert.assertTrue(HomePage.isHomePageDisplayed(),"Home Page is not Displayed");
         // Click Login Link
 		HomePage.clickLink(Constants.LOGIN_LINK);
-        //Todo - Set Username and Password
+		// Verify Login Page Displayed
+		softAssert.assertTrue(LoginPage.isLoginPageDisplayed(),"Login Page is not Displayed");
+        // Set Username and Password
 		LoginPage.setUsernamePassword(Constants.USER_NAME, Constants.PASSWORD);
-        //Todo - Click Submit
+        // Click Submit
 		LoginPage.clickSubmit();
-        //Todo - Verify Login Secure Page Displayed
-        //Todo - Verify Login Alert Displayed
-        //Todo - Verify Login  Alert Message
-        //Todo - Click Logout
-        //Todo - Verify Login Page Displayed
-        //Todo - Verify Logout Alert Displayed
-        //Todo - Verify Logout  Alert Message
+        // Verify Login Secure Page Displayed
+		softAssert.assertTrue(LoginSecurePage.isLoginSecurePageDisplayed(),"Login Secure Page is not Displayed");
+        // Verify Login Alert Displayed
+		softAssert.assertTrue(LoginSecurePage.isAlertDisplayed(),"Login Alert is not Displayed");
+        // Verify Login  Alert Message
+		softAssert.assertTrue(LoginSecurePage.getAlertContent().contains(Constants.LOGIN_SUCCESS_MSG),"Login Alert Message is incorrect");
+        // Click Logout
+		LoginSecurePage.clickLogout();
+        // Verify Login Page Displayed
+		softAssert.assertTrue(LoginPage.isLoginPageDisplayed(),"Login Page is not Displayed");
+        // Verify Logout Alert Displayed
+		softAssert.assertTrue(LoginPage.isAlertDisplayed(),"Logout Alert is not Displayed");
+        // Verify Logout  Alert Message
+		softAssert.assertTrue(LoginPage.getAlertContent().contains(Constants.LOGOUT_SUCCESS_MSG),"Logout Message is incorrect");
+
+		softAssert.assertAll();
+
 	}
 
 	/**
@@ -135,12 +147,21 @@ public class UiAutomationTrainingBasicTest extends TestBase {
 	 */
 	@Test(groups = { "test", "regression"}, priority = 7, dataProvider = "MultipleUserDetails", dataProviderClass = UserDetailsDataProvider.class)
 	public void testVerifyLogin(String username, String password) {
-        //TODO- SAME ACTION SHOULD BE REPEATED FOR MULTIPLE USERS
-        //Todo - Verify HomePage is displayed
-        //Todo - Click Login Link
-        //Todo - Set Invalid Username and Password
-        //Todo - Click Submit
-        //Todo - Verify Login Alert Displayed
-        //Todo - Verify Login  Alert Message
+		// Verify HomePage is displayed
+		softAssert = new SoftAssert();
+		softAssert.assertTrue(HomePage.isHomePageDisplayed(),"Home Page is not Displayed");
+		// Click Login Link
+		HomePage.clickLink(Constants.LOGIN_LINK);
+		// Verify Login Page Displayed
+		softAssert.assertTrue(LoginPage.isLoginPageDisplayed(),"Login Page is not Displayed");
+		// Set Invalid Username and Password
+		LoginPage.setUsernamePassword("Constants.USER_NAME", "Constants.PASSWORD");
+		// Click Submit
+		LoginPage.clickSubmit();
+        // Verify Login Alert Displayed
+		softAssert.assertTrue(LoginPage.isAlertDisplayed(),"Login Error Alert is not Displayed");
+		// Verify Login  Alert Message
+		softAssert.assertTrue(LoginPage.getAlertContent().contains(Constants.LOGIN_INVALID_MSG),"Alogin Error Message is incorrect");
+		softAssert.assertAll();
 	}
 }
