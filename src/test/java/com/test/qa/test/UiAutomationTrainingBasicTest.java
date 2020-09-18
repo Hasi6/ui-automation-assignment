@@ -20,18 +20,7 @@ import com.test.qa.utils.TestBase;
  */
 public class UiAutomationTrainingBasicTest extends TestBase {
 
-	/**
-	 * Verify Home Page Displayed
-	 */
-	@Test(groups = { "test", "regression", "smoke"}, priority = 1)
-	public void testVerifyHomePage() {
-		//Todo - Verify HomePage is displayed
-		//Todo - Click Home Page Link
-		//Todo - Wait Till Page Loads
-		//Todo - Verify ABTest Page is displayed
-		//Todo - Navigate Back to Home Page
-		//Todo - Verify HomePage is displayed
-	}
+
 
 	/**
 	 * Verify Home Page Displayed Slow
@@ -102,15 +91,36 @@ public class UiAutomationTrainingBasicTest extends TestBase {
         //Todo - Verify Forgot Password Message
 	}
 
+
+	/**
+	 * Verify Home Page Displayed
+	 */
+	@Test(groups = "REGRESSION", priority = 1)
+	public void testVerifyHomePage() {
+		softAssert = new SoftAssert();
+		softAssert.assertTrue(HomePage.isHomePageDisplayed(), "Home Page is not Displayed");
+		HomePage.clickLink(Constants.AB_TEST_LINK);
+		ABTestPage.waitTillHeaderLoad();
+		softAssert.assertTrue(ABTestPage.isABTestPageDisplayed(), "Home Page is not Displayed");
+		ABTestPage.navigateBack();
+		softAssert.assertTrue(HomePage.isHomePageDisplayed(), "Home Page is not Displayed");
+		softAssert.assertAll();
+	}
+
 	/**
 	 * Verify Login Valid Scenario
 	 */
 	@Test(groups = "test", priority = 6)
 	public void testVerifyLogin() {
-        //Todo - Verify HomePage is displayed
-        //Todo - Click Login Link
+        // Verify HomePage is displayed
+		softAssert = new SoftAssert();
+		softAssert.assertTrue(HomePage.isHomePageDisplayed(),"Home Page is not Displayed");
+        // Click Login Link
+		HomePage.clickLink(Constants.LOGIN_LINK);
         //Todo - Set Username and Password
+		LoginPage.setUsernamePassword(Constants.USER_NAME, Constants.PASSWORD);
         //Todo - Click Submit
+		LoginPage.clickSubmit();
         //Todo - Verify Login Secure Page Displayed
         //Todo - Verify Login Alert Displayed
         //Todo - Verify Login  Alert Message

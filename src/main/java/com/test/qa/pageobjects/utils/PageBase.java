@@ -35,10 +35,37 @@ public class PageBase {
     public static void initiateDriver() throws MalformedURLException {
         switch (driverType) {
             case Constants.CHROME:
-                //Todo
+                if(osType.equals(Constants.UBUNTU))
+                    System.setProperty("webdriver.chrome.driver", webDriverLocation +
+                            "chromedriver");
+                else
+                    System.setProperty("webdriver.chrome.driver", webDriverLocation +
+                            "chromedriver.exe");
+                HashMap<String, Object> chromePrefs = new HashMap<String, Object>();
+                chromePrefs.put("profile.default_content_settings.popups", 0);
+                chromePrefs.put("download.default_directory", downloadFilepath);
+                ChromeOptions optionsChrome = new ChromeOptions();
+                optionsChrome.setExperimentalOption("prefs", chromePrefs);
+                DesiredCapabilities capChrome = DesiredCapabilities.chrome();
+                capChrome.setCapability(CapabilityType.ACCEPT_SSL_CERTS, true);
+                capChrome.setCapability(ChromeOptions.CAPABILITY, optionsChrome);
+                driver = new ChromeDriver(capChrome);
                 break;
             case Constants.FIREFOX:
-                //Todo
+                if(osType.equals(Constants.UBUNTU))
+                    System.setProperty("webdriver.gecko.driver", webDriverLocation + "geckodriver");
+                else
+                    System.setProperty("webdriver.gecko.driver", webDriverLocation +
+                            "geckodriver.exe");
+                HashMap<String, Object> fireFoxPrefs = new HashMap<String, Object>();
+                FirefoxOptions optionsFireFox = new FirefoxOptions();
+                optionsFireFox.addPreference("profile.default_content_settings.popups", 0);
+                optionsFireFox.addPreference("download.prompt_for_download", "false");
+                optionsFireFox.addPreference("download.default_directory", downloadFilepath);
+                DesiredCapabilities capFireFox = DesiredCapabilities.firefox();
+                capFireFox.setCapability(CapabilityType.ACCEPT_SSL_CERTS, true);
+                capFireFox.setCapability(ChromeOptions.CAPABILITY, optionsFireFox);
+                driver = new FirefoxDriver(capFireFox);
                 break;
         }
         getDriver().manage().window().maximize();
@@ -51,69 +78,66 @@ public class PageBase {
     public static WebDriver getDriver() {
         return driver;
     }
-
     /**
      * Close web driver instances
      */
     public static void closeDriver() {
-        //Todo
+        getDriver().quit();
     }
-    
     /**
      * Refresh web driver instances
      */
     public static void refreshDriver() {
-        //Todo
+        getDriver().navigate().refresh();
     }
-    
     /**
      * Navigate Back
      */
     public static void navigateBack() {
-        //Todo
+        getDriver().navigate().back();
     }
-
     /**
      * GetCurrent Window Details
      */
     public static String getCurrentWindow() {
-        //Todo
-        return "";
+        return getDriver().getWindowHandle();
     }
-
     /**
      * Navigate to Window By Title
      * @param windowName
      */
     public static void navigateToWindow(String windowName) {
-        //Todo
+        getDriver().switchTo().window(windowName);
     }
-    
+
     /**
      * Static Wait
      */
     public static void staticWait(int seconds) {
-        //Todo
+        try {
+            Thread.sleep(seconds*1000L);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
-    
     /**
      * Implicit Wait
      */
     public static void implicitWait(int seconds) {
-        //Todo
+        getDriver().manage().timeouts().implicitlyWait(seconds, TimeUnit.SECONDS);
     }
-    
     /**
      * Explicit Wait Clickable
      */
     public static void waiTillClickable(By element ,int seconds) {
-        //Todo
+        WebDriverWait wait = new WebDriverWait(getDriver(), 10);
+        wait.until(ExpectedConditions.elementToBeClickable(element));
     }
-    
     /**
      * Explicit Wait Visible
      */
     public static void waiTillVisible(By element ,int seconds) {
-    	//Todo
+        WebDriverWait wait = new WebDriverWait(getDriver(), 10);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(element));
     }
 }
