@@ -11,7 +11,6 @@ import com.test.qa.pageobjects.utils.PageBase;
  */
 public class LoginPage extends PageBase {
 
-    private static final Logger LOGGER = Logger.getLogger(LoginPage.class);
     private static By usernameText = By.id("username");
     private static By passwordText = By.id("password");
     private static By submitButton = By.xpath("//button[@type='submit']");

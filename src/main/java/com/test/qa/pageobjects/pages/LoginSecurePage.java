@@ -25,7 +25,6 @@ public class LoginSecurePage extends PageBase {
     public static String getAlertContent(){
         waiTillVisible(flashMessage,10);
         String result =  getDriver().findElement(flashMessage).getText();
-        System.out.println("message"+result);
         return result;
     }
 
